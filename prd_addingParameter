@@ -4,9 +4,9 @@
 ################ Adding Parameters to any code  ###############
 ############### @author: Rishu Shrivastava ####################
 
-cd workspace
+cd workspace  ## a folder where all the editing work will take place. workspace is like a temporary folder
 
-for zipfile in /home/rishu/inbox/*
+for zipfile in /home/rishu/inbox/*  ## inbox is the folder to place all the reports that you need to change.
 do
 	rm -rf *
 
@@ -29,7 +29,7 @@ do
 
 	zip -r $prptfile *
 
-	mv $prptfile /home/rishu/outbox/
+	mv $prptfile /home/rishu/outbox/ ## outbox is the place to find final edited version of the report
 
 	rm -rf *
 
