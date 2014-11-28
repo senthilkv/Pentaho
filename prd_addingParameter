@@ -1,0 +1,38 @@
+#! /bin/bash
+
+################ PRPT EDITOR - Extended version ###############
+################ Adding Parameters to any code  ###############
+############### @author: Rishu Shrivastava ####################
+
+cd workspace
+
+for zipfile in /home/rishu/inbox/*
+do
+	rm -rf *
+
+	prptfile=`basename $zipfile`
+
+	echo $prptfile
+
+	cp "/home/rishu/inbox/$prptfile" .
+
+	unzip $prptfile
+
+	rm -f $prptfile
+
+	## Adding the Parameter e.g. MODEL
+	for file in `find . -name datadefinition.xml`
+	do
+		sed -i "s/<\/parameter-definition>/<plain-parameter name=\"MODEL\" mandatory=\"false\" type=\"java.lang.String\"><attribute namespace=\"http:\/\/reporting.pentaho.org\/namespaces\/engine\/parameter-attributes\/core\" name=\"role\">user<\/attribute><attribute namespace=\"http:\/\/reporting.pentaho.org\/namespaces\/engine\/parameter-attributes\/core\" name=\"parameter-render-type\">textbox<\/attribute><attribute namespace=\"http:\/\/reporting.pentaho.org\/namespaces\/engine\/parameter-attributes\/core\" name=\"label\">MODEL<\/attribute><attribute namespace=\"http:\/\/reporting.pentaho.org\/namespaces\/engine\/parameter-attributes\/core\" name=\"hidden\">false<\/attribute><\/plain-parameter> <\/parameter-definition>/g" $file
+
+	done
+
+	zip -r $prptfile *
+
+	mv $prptfile /home/rishu/outbox/
+
+	rm -rf *
+
+done	
+
+exit 0
