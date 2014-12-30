@@ -1,9 +1,7 @@
-Pentaho Report Designer | Automating Addition of report parameter
+Special Character Remover | Pentaho Kettle Step Plugin
 =======
 
-This code this for automating the Pentaho reports parameter addition step.
+Objective:
+This pentaho step plugin is build to remove special character from the input stream.
 
-Please follow the below blog for more information regarding this code:
-
-Blog Link: https://anotherreeshu.wordpress.com/2014/11/28/adding-parameter-pentaho-report-designer-stop-repetitive-task/
 
