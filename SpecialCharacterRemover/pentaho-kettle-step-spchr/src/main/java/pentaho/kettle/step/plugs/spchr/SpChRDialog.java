@@ -73,7 +73,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		formLayout.marginHeight = Const.FORM_MARGIN;
 
 		shell.setLayout(formLayout);
-		shell.setText(BaseMessages.getString(PKG, "SpChR.Shell.Title"));
+		shell.setText(BaseMessages.getString("Special Character Removal"));
 
 		int middle = props.getMiddlePct();
 		int margin = Const.MARGIN;
@@ -100,7 +100,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 
 		// output field value
 		Label wlValName = new Label(shell, SWT.RIGHT);
-		wlValName.setText(BaseMessages.getString(PKG, "SpChR.FieldName.Label"));
+		wlValName.setText(BaseMessages.getString("Output Field Name"));
 		props.setLook(wlValName);
 		FormData fdlValName = new FormData();
 		fdlValName.left = new FormAttachment(0, 0);
