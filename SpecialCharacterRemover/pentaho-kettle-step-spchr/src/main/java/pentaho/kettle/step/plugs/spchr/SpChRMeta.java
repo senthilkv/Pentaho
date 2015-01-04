@@ -32,8 +32,13 @@ import org.w3c.dom.Node;
 public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 	
 	private static Class<?> PKG = SpChRMeta.class;
+	
+	private final String TITLE="Special Character Removal";
+	private final String FIELDNAMELABEL="Output Field Name";
+	private final String FIELDNUMLABEL="Stream Field Number";
 
-	private String outputField;
+	private String outputField; //the new column or field name
+	private String fieldNum; //the field number where we need to apply the spchr
 
 	public SpChRMeta() {
 		// TODO Auto-generated constructor stub
@@ -58,7 +63,8 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 
 	public void setDefault() {
 		// TODO Auto-generated method stub
-		outputField = "Output";
+		outputField = "Result";
+		fieldNum = "0";
 	}
 
 	public String getOutputField() {
@@ -69,6 +75,15 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 		this.outputField = outputField;
 	}
 
+
+	public String getFieldNum() {
+		return fieldNum;
+	}
+
+	public void setFieldNum(String fieldNum) {
+		this.fieldNum = fieldNum;
+	}
+	
 	@Override
 	public Object clone() {
 		Object retval = super.clone();
@@ -135,7 +150,8 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 
 		// set the name of the new field
 		v.setName(outputField);
-
+		//v.setName(fieldNum);
+		
 		// type is going to be string
 		v.setType(ValueMetaInterface.TYPE_STRING);
 
@@ -171,5 +187,20 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 		}
 
 	}
+
+	public String getTITLE() {
+		return TITLE;
+	}
+
+	public String getFIELDNAMELABEL() {
+		return FIELDNAMELABEL;
+	}
+
+	public String getFIELDNUMLABEL() {
+		return FIELDNUMLABEL;
+	}
+
+
+
 
 }

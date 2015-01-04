@@ -63,16 +63,16 @@ public class SpChRStep extends BaseStep implements StepInterface{
 		
 		//Call the business logic
 		SpChRPattern sppattrn=new SpChRPattern();
-		String cleanpattern=sppattrn.getCleanPattern(data.outputRowMeta, r);
+		String cleanpattern=sppattrn.getCleanPattern(data.outputRowMeta, r,meta.getFieldNum());
 
-		// safely add the string "Hello World!" at the end of the output row
+		// safely add the output at the end of the output row
 		// the row array will be resized if necessary
 		Object[] outputRow = RowDataUtil.addValueData(r,
 				data.outputRowMeta.size() - 1, cleanpattern);
 
 		// put the row to the output row stream
 		putRow(data.outputRowMeta, outputRow);
-
+		
 		// log progress if it is time to to so
 		if (checkFeedback(getLinesRead())) {
 			logBasic("Linenr " + getLinesRead()); // Some basic logging

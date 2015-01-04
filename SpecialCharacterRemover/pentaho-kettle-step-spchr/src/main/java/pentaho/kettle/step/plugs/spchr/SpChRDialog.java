@@ -31,7 +31,8 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 
 	private SpChRMeta meta;
 
-	private Text wHelloFieldName;
+	private Text wFieldName;
+	private Text wFieldNum;
 
 	public SpChRDialog(Shell parent, Object in, TransMeta transMeta, String sname) {
 		super(parent, (BaseStepMeta) in, transMeta, sname);
@@ -73,14 +74,16 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		formLayout.marginHeight = Const.FORM_MARGIN;
 
 		shell.setLayout(formLayout);
-		shell.setText(BaseMessages.getString("Special Character Removal"));
+		//shell.setText(BaseMessages.getString("Special Character Removal")); //disabling use of property file due to issue
+		shell.setText(meta.getTITLE());
 
 		int middle = props.getMiddlePct();
 		int margin = Const.MARGIN;
 
 		// Stepname line
 		wlStepname = new Label(shell, SWT.RIGHT);
-		wlStepname.setText(BaseMessages.getString(PKG, "System.Label.StepName"));
+		wlStepname.setText(BaseMessages.getString(PKG, "System.Label.StepName")); //System variables are working fine.. only the property files are having trouble
+				
 		props.setLook(wlStepname);
 		fdlStepname = new FormData();
 		fdlStepname.left = new FormAttachment(0, 0);
@@ -100,7 +103,9 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 
 		// output field value
 		Label wlValName = new Label(shell, SWT.RIGHT);
-		wlValName.setText(BaseMessages.getString("Output Field Name"));
+		//wlValName.setText(BaseMessages.getString(PKG,"SpChR.FieldName.Label")); //disabling the use of property file due to issue
+		wlValName.setText(meta.getFIELDNAMELABEL());
+		
 		props.setLook(wlValName);
 		FormData fdlValName = new FormData();
 		fdlValName.left = new FormAttachment(0, 0);
@@ -108,14 +113,35 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		fdlValName.top = new FormAttachment(wStepname, margin);
 		wlValName.setLayoutData(fdlValName);
 
-		wHelloFieldName = new Text(shell, SWT.SINGLE | SWT.LEFT | SWT.BORDER);
-		props.setLook(wHelloFieldName);
-		wHelloFieldName.addModifyListener(lsMod);
+		wFieldName = new Text(shell, SWT.SINGLE | SWT.LEFT | SWT.BORDER);
+		props.setLook(wFieldName);
+		wFieldName.addModifyListener(lsMod);
 		FormData fdValName = new FormData();
 		fdValName.left = new FormAttachment(middle, 0);
 		fdValName.right = new FormAttachment(100, 0);
 		fdValName.top = new FormAttachment(wStepname, margin);
-		wHelloFieldName.setLayoutData(fdValName);
+		wFieldName.setLayoutData(fdValName);
+		
+		// field value
+		Label wlFieldNum = new Label(shell, SWT.RIGHT);
+		//wlFieldNum.setText(BaseMessages.getString(PKG,"SpChR.FieldNum.Label"));
+		wlFieldNum.setText(meta.getFIELDNUMLABEL());
+		
+		props.setLook(wlFieldNum);
+		FormData fdlFieldNum = new FormData();
+		fdlFieldNum.left = new FormAttachment(0, 0);
+		fdlFieldNum.right = new FormAttachment(middle, -margin);
+		fdlFieldNum.top = new FormAttachment(wFieldName, margin);
+		wlFieldNum.setLayoutData(fdlFieldNum);
+
+		wFieldNum = new Text(shell, SWT.SINGLE | SWT.LEFT | SWT.BORDER);
+		props.setLook(wFieldNum);
+		wFieldNum.addModifyListener(lsMod);
+		FormData fdFieldNum = new FormData();
+		fdFieldNum.left = new FormAttachment(middle, 0);
+		fdFieldNum.right = new FormAttachment(100, 0);
+		fdFieldNum.top = new FormAttachment(wFieldName, margin);
+		wFieldNum.setLayoutData(fdFieldNum);
 
 		// OK and cancel buttons
 		wOK = new Button(shell, SWT.PUSH);
@@ -124,7 +150,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		wCancel.setText(BaseMessages.getString(PKG, "System.Button.Cancel"));
 
 		BaseStepDialog.positionBottomButtons(shell,
-				new Button[] { wOK, wCancel }, margin, wHelloFieldName);
+				new Button[] { wOK, wCancel }, margin, wFieldNum);
 
 		// Add listeners for cancel and OK
 		lsCancel = new Listener() {
@@ -148,9 +174,11 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 				ok();
 			}
 		};
+		
 		wStepname.addSelectionListener(lsDef);
-		wHelloFieldName.addSelectionListener(lsDef);
-
+		wFieldName.addSelectionListener(lsDef);
+		wFieldNum.addSelectionListener(lsDef);
+		
 		// Detect X or ALT-F4 or something that kills this window and cancel the
 		// dialog properly
 		shell.addShellListener(new ShellAdapter() {
@@ -186,7 +214,8 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 
 	private void populateDialog() {
 		wStepname.selectAll();
-		wHelloFieldName.setText(meta.getOutputField());
+		wFieldName.setText(meta.getOutputField());
+		wFieldNum.setText(meta.getFieldNum());
 	}
 
 	/**
@@ -212,7 +241,8 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		// Setting to step name from the dialog control
 		stepname = wStepname.getText();
 		// Setting the settings to the meta object
-		meta.setOutputField(wHelloFieldName.getText());
+		meta.setOutputField(wFieldName.getText());
+		meta.setFieldNum(wFieldNum.getText());
 		// close the SWT dialog window
 		dispose();
 	}
