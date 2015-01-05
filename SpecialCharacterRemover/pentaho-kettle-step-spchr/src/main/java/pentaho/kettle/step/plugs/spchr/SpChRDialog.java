@@ -39,7 +39,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 	private SpChRMeta meta;
 
 	private Text wFieldName;
-	private Text wFieldNum;
+	//private Text wFieldNum;
 	private Combo wInputDrop;
 	private RowMetaInterface prevFields=null;
 	private Map<String, String> prevFieldIndexMap;
@@ -133,7 +133,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		wFieldName.setLayoutData(fdValName);
 		
 		// field value
-		Label wlFieldNum = new Label(shell, SWT.RIGHT);
+		/*Label wlFieldNum = new Label(shell, SWT.RIGHT);
 		//wlFieldNum.setText(BaseMessages.getString(PKG,"SpChR.FieldNum.Label"));
 		wlFieldNum.setText(meta.getFIELDNUMLABEL());
 		props.setLook(wlFieldNum);
@@ -150,7 +150,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		fdFieldNum.left = new FormAttachment(middle, 0);
 		fdFieldNum.right = new FormAttachment(100, 0);
 		fdFieldNum.top = new FormAttachment(wFieldName, margin);
-		wFieldNum.setLayoutData(fdFieldNum);
+		wFieldNum.setLayoutData(fdFieldNum);*/
 		
 		//field num Dropdown
 		
@@ -160,7 +160,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		FormData fdInputDrop=new FormData();
 		fdInputDrop.left=new FormAttachment(0,0);
 		fdInputDrop.right=new FormAttachment(middle,-margin);
-		fdInputDrop.top=new FormAttachment(wFieldNum,margin);
+		fdInputDrop.top=new FormAttachment(wFieldName,margin);
 		inputDrop.setLayoutData(fdInputDrop);
 		
 		//wInputDrop = new Text(shell, SWT.SINGLE | SWT.LEFT | SWT.BORDER);
@@ -172,7 +172,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		FormData fdwInputDrop = new FormData();
 		fdwInputDrop.left = new FormAttachment(middle, 0);
 		fdwInputDrop.right = new FormAttachment(100, 0);
-		fdwInputDrop.top = new FormAttachment(wFieldNum, margin);
+		fdwInputDrop.top = new FormAttachment(wFieldName, margin);
 		wInputDrop.setLayoutData(fdwInputDrop);
 
 		
@@ -210,7 +210,8 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		
 		wStepname.addSelectionListener(lsDef);
 		wFieldName.addSelectionListener(lsDef);
-		wFieldNum.addSelectionListener(lsDef);
+		//wFieldNum.addSelectionListener(lsDef);
+		wInputDrop.addSelectionListener(lsDef);
 		
 		// Detect X or ALT-F4 or something that kills this window and cancel the
 		// dialog properly
@@ -289,7 +290,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 	private void populateDialog() {
 		wStepname.selectAll();
 		wFieldName.setText(meta.getOutputField());
-		wFieldNum.setText(meta.getFieldNum());
+		//wFieldNum.setText(meta.getFieldNum());
 		
 		
 	}
@@ -316,11 +317,13 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		// method.
 		// Setting to step name from the dialog control
 		stepname = wStepname.getText();
+		
 		// Setting the settings to the meta object
 		meta.setOutputField(wFieldName.getText());
-		meta.setFieldNum(wFieldNum.getText());
+		//meta.setFieldNum(wFieldNum.getText());
 		meta.setInputDropData(wInputDrop.getText());
 		meta.setInputDropDataIndex(prevFieldIndexMap.get(wInputDrop.getText()));
+		
 		// close the SWT dialog window
 		dispose();
 	}

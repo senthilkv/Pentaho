@@ -38,7 +38,7 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 	private final String FIELDNUMLABEL="Stream Field Number";
 
 	private String outputField; //the new column or field name
-	private String fieldNum; //the field number where we need to apply the spchr
+	//private String fieldNum; //the field number where we need to apply the spchr
 	private String inputDropData;
 	private String inputDropDataIndex;
 
@@ -66,7 +66,7 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 	public void setDefault() {
 		// TODO Auto-generated method stub
 		outputField = "Result";
-		fieldNum = "0";
+		//fieldNum = "0";
 		//inputDropData= getInputDropData();
 	}
 
@@ -79,14 +79,14 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 	}
 
 
-	public String getFieldNum() {
+	/*public String getFieldNum() {
 		return fieldNum;
 	}
 
 	public void setFieldNum(String fieldNum) {
 		this.fieldNum = fieldNum;
 	}
-	
+	*/
 	public String getInputDropData() {
 		
 		return inputDropData;
