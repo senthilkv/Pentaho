@@ -2,7 +2,6 @@ package pentaho.kettle.step.plugs.spchr;
 
 import org.pentaho.di.core.exception.KettleException;
 import org.pentaho.di.core.row.RowDataUtil;
-
 import org.pentaho.di.trans.Trans;
 import org.pentaho.di.trans.TransMeta;
 import org.pentaho.di.trans.step.BaseStep;
@@ -12,6 +11,8 @@ import org.pentaho.di.trans.step.StepMeta;
 import org.pentaho.di.trans.step.StepMetaInterface;
 
 public class SpChRStep extends BaseStep implements StepInterface{
+	
+	
 
 	public SpChRStep(StepMeta s, StepDataInterface stepDataInterface, int c,
 			TransMeta t, Trans dis) {
@@ -56,14 +57,21 @@ public class SpChRStep extends BaseStep implements StepInterface{
 			first = false;
 			// clone the input row structure and place it in our data object
 			data.outputRowMeta = getInputRowMeta().clone();
+			
+			//setFieldNames(data.outputRowMeta.getFieldNames());
+			
+			
+			//meta.setInputDropData(FieldNames);
 			// use meta.getFields() to change it, so it reflects the output row
 			// structure
 			meta.getFields(data.outputRowMeta, getStepname(), null, null, this);
+			
+			
 		}
 		
 		//Call the business logic
 		SpChRPattern sppattrn=new SpChRPattern();
-		String cleanpattern=sppattrn.getCleanPattern(data.outputRowMeta, r,meta.getFieldNum());
+		String cleanpattern=sppattrn.getCleanPattern(data.outputRowMeta, r,meta.getInputDropDataIndex());
 
 		// safely add the output at the end of the output row
 		// the row array will be resized if necessary

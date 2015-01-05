@@ -39,6 +39,8 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 
 	private String outputField; //the new column or field name
 	private String fieldNum; //the field number where we need to apply the spchr
+	private String inputDropData;
+	private String inputDropDataIndex;
 
 	public SpChRMeta() {
 		// TODO Auto-generated constructor stub
@@ -65,6 +67,7 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 		// TODO Auto-generated method stub
 		outputField = "Result";
 		fieldNum = "0";
+		//inputDropData= getInputDropData();
 	}
 
 	public String getOutputField() {
@@ -83,6 +86,17 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 	public void setFieldNum(String fieldNum) {
 		this.fieldNum = fieldNum;
 	}
+	
+	public String getInputDropData() {
+		
+		return inputDropData;
+	}
+
+	public void setInputDropData(String inputDropData) {
+		
+		this.inputDropData = inputDropData;
+	}
+
 	
 	@Override
 	public Object clone() {
@@ -200,7 +214,15 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 		return FIELDNUMLABEL;
 	}
 
+	public String getInputDropDataIndex() {
+		return inputDropDataIndex;
+	}
 
+	public void setInputDropDataIndex(String inputDropDataIndex) {
+		this.inputDropDataIndex = inputDropDataIndex;
+	}
+
+	
 
 
 }

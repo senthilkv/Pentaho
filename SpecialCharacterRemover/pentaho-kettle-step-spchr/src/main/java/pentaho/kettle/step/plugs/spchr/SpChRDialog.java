@@ -1,5 +1,8 @@
 package pentaho.kettle.step.plugs.spchr;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -11,6 +14,7 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
@@ -18,6 +22,9 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.pentaho.di.core.Const;
+import org.pentaho.di.core.exception.KettleStepException;
+import org.pentaho.di.core.row.RowMeta;
+import org.pentaho.di.core.row.RowMetaInterface;
 import org.pentaho.di.i18n.BaseMessages;
 import org.pentaho.di.trans.TransMeta;
 import org.pentaho.di.trans.step.BaseStepMeta;
@@ -33,6 +40,9 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 
 	private Text wFieldName;
 	private Text wFieldNum;
+	private Combo wInputDrop;
+	private RowMetaInterface prevFields=null;
+	private Map<String, String> prevFieldIndexMap;
 
 	public SpChRDialog(Shell parent, Object in, TransMeta transMeta, String sname) {
 		super(parent, (BaseStepMeta) in, transMeta, sname);
@@ -126,7 +136,6 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		Label wlFieldNum = new Label(shell, SWT.RIGHT);
 		//wlFieldNum.setText(BaseMessages.getString(PKG,"SpChR.FieldNum.Label"));
 		wlFieldNum.setText(meta.getFIELDNUMLABEL());
-		
 		props.setLook(wlFieldNum);
 		FormData fdlFieldNum = new FormData();
 		fdlFieldNum.left = new FormAttachment(0, 0);
@@ -142,7 +151,31 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		fdFieldNum.right = new FormAttachment(100, 0);
 		fdFieldNum.top = new FormAttachment(wFieldName, margin);
 		wFieldNum.setLayoutData(fdFieldNum);
+		
+		//field num Dropdown
+		
+		Label inputDrop=new Label(shell,SWT.RIGHT);
+		inputDrop.setText("Input Dropdown");
+		props.setLook(inputDrop);
+		FormData fdInputDrop=new FormData();
+		fdInputDrop.left=new FormAttachment(0,0);
+		fdInputDrop.right=new FormAttachment(middle,-margin);
+		fdInputDrop.top=new FormAttachment(wFieldNum,margin);
+		inputDrop.setLayoutData(fdInputDrop);
+		
+		//wInputDrop = new Text(shell, SWT.SINGLE | SWT.LEFT | SWT.BORDER);
+		wInputDrop=new Combo(shell, SWT.DROP_DOWN);
+		props.setLook(wInputDrop);
+		//wInputDrop.setItems();
+		
+		wInputDrop.addModifyListener(lsMod);
+		FormData fdwInputDrop = new FormData();
+		fdwInputDrop.left = new FormAttachment(middle, 0);
+		fdwInputDrop.right = new FormAttachment(100, 0);
+		fdwInputDrop.top = new FormAttachment(wFieldNum, margin);
+		wInputDrop.setLayoutData(fdwInputDrop);
 
+		
 		// OK and cancel buttons
 		wOK = new Button(shell, SWT.PUSH);
 		wOK.setText(BaseMessages.getString(PKG, "System.Button.OK"));
@@ -150,7 +183,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		wCancel.setText(BaseMessages.getString(PKG, "System.Button.Cancel"));
 
 		BaseStepDialog.positionBottomButtons(shell,
-				new Button[] { wOK, wCancel }, margin, wFieldNum);
+				new Button[] { wOK, wCancel }, margin, wInputDrop);
 
 		// Add listeners for cancel and OK
 		lsCancel = new Listener() {
@@ -194,6 +227,9 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 
 		// populate the dialog with the values from the meta object
 		populateDialog();
+		
+		//set asynchronous listing of the dropdown combo box
+		setComboBox();
 
 		// restore the changed flag to original value, as the modify listeners
 		// fire during dialog population
@@ -212,10 +248,50 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		return stepname;
 	}
 
+	//asynchronously loading the ComboBox. call setComboBox
+	private void setComboBox() {
+		// TODO Auto-generated method stub
+		Runnable fieldLoader=new Runnable() {
+			public void run() {
+				// TODO Auto-generated method stub
+				try {
+					prevFields=transMeta.getPrevStepFields(stepname);
+				} catch (KettleStepException e) {
+					// TODO Auto-generated catch block
+					prevFields=new RowMeta();
+					logError("Unable to Find Input Fields");
+				}
+				//int prevFieldLen=prevFields.getFieldNames().length;
+				
+				//ArrayList<String> list=new ArrayList<String>();
+				prevFieldIndexMap=new HashMap<String, String>();
+				
+				//String[] prevFieldList=prevFields.getFieldNames();
+				String[] prevStepFieldsNames=prevFields.getFieldNames();
+				
+				for(int i=0;i<prevStepFieldsNames.length; i++){
+					//list.add(i+":"+prevFieldList[i]);
+					prevFieldIndexMap.put(prevStepFieldsNames[i],Integer.toString(i));				
+				}
+				
+				//String[] prevStepFieldsNames=list.toArray(new String[]{});
+				
+				
+				//Arrays.sort(prevStepFieldsNames);
+				
+				wInputDrop.setItems(prevStepFieldsNames);
+			}
+		};
+		new Thread(fieldLoader).run();
+		
+	}
+
 	private void populateDialog() {
 		wStepname.selectAll();
 		wFieldName.setText(meta.getOutputField());
 		wFieldNum.setText(meta.getFieldNum());
+		
+		
 	}
 
 	/**
@@ -243,8 +319,28 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		// Setting the settings to the meta object
 		meta.setOutputField(wFieldName.getText());
 		meta.setFieldNum(wFieldNum.getText());
+		meta.setInputDropData(wInputDrop.getText());
+		meta.setInputDropDataIndex(prevFieldIndexMap.get(wInputDrop.getText()));
 		// close the SWT dialog window
 		dispose();
 	}
+
+	public RowMetaInterface getPrevFields() {
+		return prevFields;
+	}
+
+	public void setPrevFields(RowMetaInterface prevFields) {
+		this.prevFields = prevFields;
+	}
+
+	public Map<String, String> getPrevFieldIndexMap() {
+		return prevFieldIndexMap;
+	}
+
+	public void setPrevFieldIndexMap(Map<String, String> prevFieldIndexMap) {
+		this.prevFieldIndexMap = prevFieldIndexMap;
+	}
+
+	
 
 }
