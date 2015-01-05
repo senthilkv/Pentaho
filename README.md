@@ -1,9 +1,25 @@
-Pentaho | Codes Snippets Plugins
+Pentaho | Codes Snippets Plugins Automation
 =======
+Author: Rishu Shrivastava
 
-This code this for automating the Pentaho reports parameter addition step.
+Description
+---
+This repo is for codes and plugins related to Pentaho BI Suite development and automations. Any improvement, code snippet, plugin developments related to Kettle (PDI), Reports (prpt), etc will be included here.
 
-Please follow the below blog for more information regarding this code:
+All new apps will be stored in a separate folder inside the "rishuatgithub/Pentaho" path. Each folder will represent a separate identity of the development.
 
-Blog Link: https://anotherreeshu.wordpress.com/2014/11/28/adding-parameter-pentaho-report-designer-stop-repetitive-task/
+Work Till Date:
+---
+1. Prpt-adding-parameter : 
 
+    a Unix SHELL Script based automated code for editing Parameters.
+
+2. SpecialCharacterRemover : 
+
+    a Pentaho Kettle Plugin coded in Java for removing special characters from the input Stream. Current Version:1.1
+    
+    
+    
+Each Folder contains a seperate "README.md" file for more description on the app descriptions, development specs and future release.
+
+Please feel free to contribute :)
