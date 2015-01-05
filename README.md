@@ -1,4 +1,4 @@
-Pentaho Report Designer | Automating Addition of report parameter
+Pentaho | Codes Snippets Plugins
 =======
 
 This code this for automating the Pentaho reports parameter addition step.
