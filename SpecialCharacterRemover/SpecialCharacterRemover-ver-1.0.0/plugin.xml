@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	id: 			String uniquely identifying the step. Used in serialization. 
+	iconfile:		The step icon used in spoon
+	description: 	The name of the step as it appears in Spoon
+	tooltip:		The tooltip of the step as it appears in Spoon
+	category:		The step category in the tree view in Spoon
+	classname:		The step class implementing StepMetaInterface
+ -->
+<plugin
+   id="SpChR"
+   iconfile="icon.png"
+   description="Special Character Remover"
+   tooltip="Remove special characters from your input stream"
+   category="Experimental"
+   classname="pentaho.kettle.step.plugs.spchr.SpChRMeta">
+		
+		<!-- the list of jar files to include when loading the step -->
+		<libraries>
+			<!-- the classes implementing the step interfaces are in this jar -->
+    		<library name="pentaho-kettle-step-spchr-1.0.0.jar"/>
+    		
+    		<!-- specify additional jars to be included when loading the step plug-in -->
+    		<!--  
+    			<library name="lib/some-additional-jar.jar"/>
+    		 -->
+		</libraries>
+		
+</plugin>
