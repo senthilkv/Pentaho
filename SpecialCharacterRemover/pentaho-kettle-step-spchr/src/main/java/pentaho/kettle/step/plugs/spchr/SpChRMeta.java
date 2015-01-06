@@ -33,7 +33,7 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 	
 	private static Class<?> PKG = SpChRMeta.class;
 	
-	private final String TITLE="Special Character Removal";
+	private final String TITLE="Special Character Remover";
 	private final String FIELDNAMELABEL="Output Field Name";
 	private final String FIELDNUMLABEL="Stream Field Number";
 
