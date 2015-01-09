@@ -41,6 +41,16 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 	//private String fieldNum; //the field number where we need to apply the spchr
 	private String inputDropData;
 	private String inputDropDataIndex;
+	private String[] algoBoxItems={ "Remove all the Special Characters other than A-Z,a-z,0-9 including white-spaces",
+									"Remove all the Special Characters other than A-Z,a-z,0-9 keep the white-spaces",
+									"Remove anything outside ASCII code 0 to 255",
+									"Remove Unicode Block",
+									"Keep Unicode Block, remove the rest",
+									"Keep A-Z,a-z,0-9 and ADD Exceptions",
+									"Custom Regular Expression"
+	};
+	private String algoBoxItemsSelected;
+	private String customCode;
 
 	public SpChRMeta() {
 		// TODO Auto-generated constructor stub
@@ -220,6 +230,31 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 
 	public void setInputDropDataIndex(String inputDropDataIndex) {
 		this.inputDropDataIndex = inputDropDataIndex;
+	}
+
+	public String[] getAlgoBoxItems() {
+		return algoBoxItems;
+	}
+
+	public void setAlgoBoxItems(String[] algoBoxItems) {
+		//algoBoxItems=new String[]{"Algorithm 1","Algorithm 2","Algorithm 3"};
+		this.algoBoxItems = algoBoxItems;
+	}
+
+	public String getAlgoBoxItemsSelected() {
+		return algoBoxItemsSelected;
+	}
+
+	public void setAlgoBoxItemsSelected(String algoBoxItemsSelected) {
+		this.algoBoxItemsSelected = algoBoxItemsSelected;
+	}
+
+	public String getCustomCode() {
+		return customCode;
+	}
+
+	public void setCustomCode(String customCode) {
+		this.customCode = customCode;
 	}
 
 	

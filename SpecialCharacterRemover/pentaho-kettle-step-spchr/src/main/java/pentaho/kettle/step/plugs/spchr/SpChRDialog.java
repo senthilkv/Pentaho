@@ -8,8 +8,10 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -37,12 +39,16 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 	private static Class<?> PKG = SpChRMeta.class; // for il8n purposes
 
 	private SpChRMeta meta;
+	//private SpChRAlgoList algopattern=new SpChRAlgoList();
 
 	private Text wFieldName;
 	//private Text wFieldNum;
 	private Combo wInputDrop;
 	private RowMetaInterface prevFields=null;
 	private Map<String, String> prevFieldIndexMap;
+	private Combo wAlgoBox;
+	private Text wCustomLabel;
+	
 
 	public SpChRDialog(Shell parent, Object in, TransMeta transMeta, String sname) {
 		super(parent, (BaseStepMeta) in, transMeta, sname);
@@ -51,6 +57,8 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 
 	public String open() {
 
+		//SpChRAlgoList algolistPatternobj=new SpChRAlgoList();
+		
 		// store some convenient SWT variables
 		Shell parent = getParent();
 		Display display = parent.getDisplay();
@@ -76,12 +84,17 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 			}
 		};
 
+		
 		// ------------------------------------------------------- //
 		// SWT code for building the actual settings dialog //
 		// ------------------------------------------------------- //
 		FormLayout formLayout = new FormLayout();
 		formLayout.marginWidth = Const.FORM_MARGIN;
 		formLayout.marginHeight = Const.FORM_MARGIN;
+		
+		//Setting some color standards
+		final Color GRAY=display.getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT);
+		final Color TEXBLUR=display.getSystemColor(SWT.COLOR_GRAY);
 
 		shell.setLayout(formLayout);
 		//shell.setText(BaseMessages.getString("Special Character Removal")); //disabling use of property file due to issue
@@ -110,12 +123,11 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		fdStepname.top = new FormAttachment(0, margin);
 		fdStepname.right = new FormAttachment(100, 0);
 		wStepname.setLayoutData(fdStepname);
-
+		
 		// output field value
 		Label wlValName = new Label(shell, SWT.RIGHT);
 		//wlValName.setText(BaseMessages.getString(PKG,"SpChR.FieldName.Label")); //disabling the use of property file due to issue
-		wlValName.setText(meta.getFIELDNAMELABEL());
-		
+		wlValName.setText(meta.getFIELDNAMELABEL());		
 		props.setLook(wlValName);
 		FormData fdlValName = new FormData();
 		fdlValName.left = new FormAttachment(0, 0);
@@ -166,15 +178,54 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		//wInputDrop = new Text(shell, SWT.SINGLE | SWT.LEFT | SWT.BORDER);
 		wInputDrop=new Combo(shell, SWT.DROP_DOWN);
 		props.setLook(wInputDrop);
-		//wInputDrop.setItems();
-		
+		//wInputDrop.setItems();		
 		wInputDrop.addModifyListener(lsMod);
 		FormData fdwInputDrop = new FormData();
 		fdwInputDrop.left = new FormAttachment(middle, 0);
 		fdwInputDrop.right = new FormAttachment(100, 0);
 		fdwInputDrop.top = new FormAttachment(wFieldName, margin);
 		wInputDrop.setLayoutData(fdwInputDrop);
-
+		
+		//Select algorithm combo box
+		Label algoBox=new Label(shell, SWT.RIGHT);
+		algoBox.setText("Select Algorithm");
+		props.setLook(algoBox);
+		FormData fdalgoBox=new FormData();
+		fdalgoBox.left=new FormAttachment(0,0);
+		fdalgoBox.right=new FormAttachment(middle,-margin);
+		fdalgoBox.top=new FormAttachment(wInputDrop,margin);
+		algoBox.setLayoutData(fdalgoBox);
+		
+		wAlgoBox=new Combo(shell,SWT.DROP_DOWN);
+		props.setLook(wAlgoBox);
+		//wAlgoBox.setItems(null);
+		wAlgoBox.addModifyListener(lsMod);
+		FormData fdwAlgoBox=new FormData();
+		fdwAlgoBox.left=new FormAttachment(middle,0);
+		fdwAlgoBox.right = new FormAttachment(100, 0);
+		fdwAlgoBox.top = new FormAttachment(wInputDrop, margin);
+		wAlgoBox.setLayoutData(fdwAlgoBox);
+		
+		//adding Exception/Custom Regex place
+		final Label customLabel=new Label(shell, SWT.RIGHT);
+		customLabel.setText("Add Exception/Custom RegEx Expression");
+		customLabel.setForeground(TEXBLUR);
+		props.setLook(customLabel);
+		FormData fdcustomLabel=new FormData();
+		fdcustomLabel.left=new FormAttachment(0,0);
+		fdcustomLabel.right=new FormAttachment(middle,-margin);
+		fdcustomLabel.top=new FormAttachment(wAlgoBox,margin);
+		customLabel.setLayoutData(fdcustomLabel);
+		
+		wCustomLabel = new Text(shell, SWT.READ_ONLY |SWT.SINGLE | SWT.LEFT | SWT.BORDER);
+		props.setLook(wCustomLabel);
+		wCustomLabel.addModifyListener(lsMod);
+		wCustomLabel.setBackground(GRAY);
+		FormData fdwCustomLabel = new FormData();
+		fdwCustomLabel.left = new FormAttachment(middle, 0);
+		fdwCustomLabel.right = new FormAttachment(100, 0);
+		fdwCustomLabel.top = new FormAttachment(wAlgoBox, margin);
+		wCustomLabel.setLayoutData(fdwCustomLabel);
 		
 		// OK and cancel buttons
 		wOK = new Button(shell, SWT.PUSH);
@@ -183,7 +234,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		wCancel.setText(BaseMessages.getString(PKG, "System.Button.Cancel"));
 
 		BaseStepDialog.positionBottomButtons(shell,
-				new Button[] { wOK, wCancel }, margin, wInputDrop);
+				new Button[] { wOK, wCancel }, margin, wCustomLabel);
 
 		// Add listeners for cancel and OK
 		lsCancel = new Listener() {
@@ -212,6 +263,32 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		wFieldName.addSelectionListener(lsDef);
 		//wFieldNum.addSelectionListener(lsDef);
 		wInputDrop.addSelectionListener(lsDef);
+		wAlgoBox.addSelectionListener(lsDef);
+		
+		
+		//add selection listener for the exception tab
+		wAlgoBox.addSelectionListener(new SelectionListener() {
+			
+			public void widgetSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				String selectedTextAlgoBox=wAlgoBox.getText();
+				if(selectedTextAlgoBox.equals("Keep A-Z,a-z,0-9 and ADD Exceptions") || selectedTextAlgoBox.equals("Custom Regular Expression") ){
+					wCustomLabel.setEditable(true);
+					wCustomLabel.setBackground(null);
+					customLabel.setForeground(null);
+				}else{
+					wCustomLabel.setEditable(false);
+					wCustomLabel.setBackground(GRAY);
+					customLabel.setForeground(TEXBLUR);
+					wCustomLabel.setText("");
+				}
+			}
+			
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		// Detect X or ALT-F4 or something that kills this window and cancel the
 		// dialog properly
@@ -221,7 +298,9 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 				cancel();
 			}
 		});
-
+		
+		//algopattern.algoPatternlistMeth();
+				
 		// Set/Restore the dialog size based on last position on screen
 		// The setSize() method is inherited from BaseStepDialog
 		setSize();
@@ -291,8 +370,8 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		wStepname.selectAll();
 		wFieldName.setText(meta.getOutputField());
 		//wFieldNum.setText(meta.getFieldNum());
-		
-		
+		wAlgoBox.setItems(meta.getAlgoBoxItems());		
+		wAlgoBox.select(0); //always by default selects the first item.
 	}
 
 	/**
@@ -303,7 +382,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		// method.
 		// Setting to null to indicate that dialog was cancelled.
 		stepname = null;
-		// Restoring original "changed" flag on the met aobject
+		// Restoring original "changed" flag on the met a object
 		meta.setChanged(changed);
 		// close the SWT dialog window
 		dispose();
@@ -323,7 +402,8 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		//meta.setFieldNum(wFieldNum.getText());
 		meta.setInputDropData(wInputDrop.getText());
 		meta.setInputDropDataIndex(prevFieldIndexMap.get(wInputDrop.getText()));
-		
+		meta.setAlgoBoxItemsSelected(wAlgoBox.getText());
+		meta.setCustomCode(wCustomLabel.getText());
 		// close the SWT dialog window
 		dispose();
 	}

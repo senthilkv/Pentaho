@@ -69,9 +69,13 @@ public class SpChRStep extends BaseStep implements StepInterface{
 			
 		}
 		
+		//choose the pattern based on selection
+		SpChRAlgoList algolistobj=new SpChRAlgoList();
+		String selectedPattern=algolistobj.getAlgoPattern(meta.getAlgoBoxItemsSelected());
+		
 		//Call the business logic
 		SpChRPattern sppattrn=new SpChRPattern();
-		String cleanpattern=sppattrn.getCleanPattern(data.outputRowMeta, r,meta.getInputDropDataIndex());
+		String cleanpattern=sppattrn.getCleanPattern(data.outputRowMeta, r,meta.getInputDropDataIndex(),selectedPattern,meta.getCustomCode());
 
 		// safely add the output at the end of the output row
 		// the row array will be resized if necessary

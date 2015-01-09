@@ -6,16 +6,16 @@ import org.pentaho.di.core.row.RowMetaInterface;
 public class SpChRPattern {
 	
 		
-	public String getCleanPattern(RowMetaInterface data,Object[] r,String fieldNum) throws KettleValueException{
+	public String getCleanPattern(RowMetaInterface data,Object[] r,String fieldNum,String selectedPattern,String customCode) throws KettleValueException{
 	
-		String pattern="[^A-Za-z0-9\\s]";
+		//String pattern="[^A-Za-z0-9\\s]";
 		String replace_pattern="";
 		
 		int _intfieldNum=Integer.parseInt(fieldNum);
 		
-		String data_row=data.getString(r, _intfieldNum);
+		String data_row=data.getString(r, _intfieldNum)+" : "+customCode;
 		
-		String SpecialCleaner=data_row.replaceAll(pattern, replace_pattern);
+		String SpecialCleaner=data_row.replaceAll(selectedPattern, replace_pattern);
 		
 		return SpecialCleaner;
 	
