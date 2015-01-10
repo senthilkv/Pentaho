@@ -13,7 +13,7 @@ public class SpChRPattern {
 		
 		int _intfieldNum=Integer.parseInt(fieldNum);
 		
-		String data_row=data.getString(r, _intfieldNum)+" : "+customCode;
+		String data_row=data.getString(r, _intfieldNum);
 		
 		String SpecialCleaner=data_row.replaceAll(selectedPattern, replace_pattern);
 		

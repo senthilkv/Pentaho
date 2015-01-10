@@ -2,6 +2,7 @@ package pentaho.kettle.step.plugs.spchr;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -95,6 +96,8 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		//Setting some color standards
 		final Color GRAY=display.getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT);
 		final Color TEXBLUR=display.getSystemColor(SWT.COLOR_GRAY);
+		final Color RED=display.getSystemColor(SWT.COLOR_RED);
+		final Color GREEN=display.getSystemColor(SWT.COLOR_GREEN);
 
 		shell.setLayout(formLayout);
 		//shell.setText(BaseMessages.getString("Special Character Removal")); //disabling use of property file due to issue
@@ -276,6 +279,9 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 					wCustomLabel.setEditable(true);
 					wCustomLabel.setBackground(null);
 					customLabel.setForeground(null);
+					//wCustomLabel.setForeground(TEXBLUR);
+					wCustomLabel.setText("[enter your code in between brackets]");
+					
 				}else{
 					wCustomLabel.setEditable(false);
 					wCustomLabel.setBackground(GRAY);
@@ -289,6 +295,42 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 				
 			}
 		});
+		
+		//Add Key UP Listener for Testing the regex and stuff in the Custom/Exception part
+		wCustomLabel.addListener(SWT.KeyUp, new Listener() {
+			
+			public void handleEvent(Event arg0) {
+				// TODO Auto-generated method stub
+				
+				int textLen=wCustomLabel.getText().length();
+				String textEnter=wCustomLabel.getText();
+				
+				//Check the initial conditions
+				if(textLen >=1 && textEnter.substring(0,1).equals("[") && textEnter.substring(textLen-1, textLen).equals("]")){
+					
+					//test the regex expression for missing groups, + and other basic stuffs
+					//if (wAlgoBox.getText().equals("Custom Regular Expression")) {
+						try {
+							Pattern.compile(textEnter);
+
+						} catch (Exception e) {
+
+							wCustomLabel.setBackground(RED);
+
+						}
+					//}
+					
+					wCustomLabel.setBackground(GREEN);
+					
+				}else{ 
+					//initial conditions are false
+					wCustomLabel.setBackground(RED);
+				}
+					
+				
+			}
+		});
+		
 		
 		// Detect X or ALT-F4 or something that kills this window and cancel the
 		// dialog properly
@@ -404,6 +446,9 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		meta.setInputDropDataIndex(prevFieldIndexMap.get(wInputDrop.getText()));
 		meta.setAlgoBoxItemsSelected(wAlgoBox.getText());
 		meta.setCustomCode(wCustomLabel.getText());
+		
+		
+		
 		// close the SWT dialog window
 		dispose();
 	}

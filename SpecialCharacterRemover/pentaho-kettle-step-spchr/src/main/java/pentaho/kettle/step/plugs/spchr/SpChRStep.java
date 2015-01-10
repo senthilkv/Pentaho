@@ -71,7 +71,7 @@ public class SpChRStep extends BaseStep implements StepInterface{
 		
 		//choose the pattern based on selection
 		SpChRAlgoList algolistobj=new SpChRAlgoList();
-		String selectedPattern=algolistobj.getAlgoPattern(meta.getAlgoBoxItemsSelected());
+		String selectedPattern=algolistobj.getAlgoPattern(meta.getAlgoBoxItemsSelected(),meta.getCustomCode());
 		
 		//Call the business logic
 		SpChRPattern sppattrn=new SpChRPattern();
