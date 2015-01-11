@@ -20,7 +20,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
@@ -149,14 +148,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		fdValName.top = new FormAttachment(wStepname, margin);
 		wFieldName.setLayoutData(fdValName);
 		
-		Group gConnect = new Group(shell, SWT.SHADOW_ETCHED_IN);
-        gConnect.setText("Choose Parameters");
-        FormLayout gConnectLayout = new FormLayout();
-        gConnectLayout.marginWidth = 3;
-        gConnectLayout.marginHeight = 3;
-        gConnect.setLayout(gConnectLayout);
-        props.setLook(gConnect);
-		
+			
 		//field num Dropdown
 		
 		Label inputDrop=new Label(shell,SWT.RIGHT);
@@ -270,7 +262,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 					wCustomLabel.setBackground(null);
 					customLabel.setForeground(null);
 					//wCustomLabel.setForeground(TEXBLUR);
-					wCustomLabel.setText("[enter your code in between brackets]");
+					wCustomLabel.setText("[enter your code here]");
 					
 				}else{
 					wCustomLabel.setEditable(false);
@@ -398,7 +390,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 				wInputDrop.setItems(prevStepFieldsNames);
 			}
 		};
-		new Thread(fieldLoader).run();
+		new Thread(fieldLoader).start();
 		
 	}
 
