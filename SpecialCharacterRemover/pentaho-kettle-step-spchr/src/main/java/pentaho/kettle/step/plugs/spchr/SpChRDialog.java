@@ -40,10 +40,8 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 	private static Class<?> PKG = SpChRMeta.class; // for il8n purposes
 
 	private SpChRMeta meta;
-	//private SpChRAlgoList algopattern=new SpChRAlgoList();
-
+	
 	private Text wFieldName;
-	//private Text wFieldNum;
 	private Combo wInputDrop;
 	private RowMetaInterface prevFields=null;
 	private Map<String, String> prevFieldIndexMap;
@@ -58,8 +56,6 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 
 	public String open() {
 
-		//SpChRAlgoList algolistPatternobj=new SpChRAlgoList();
-		
 		// store some convenient SWT variables
 		Shell parent = getParent();
 		Display display = parent.getDisplay();
@@ -69,8 +65,6 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 				| SWT.MAX);
 		props.setLook(shell);
 		setShellImage(shell, meta);
-
-		
 
 		// The ModifyListener used on all controls. It will update the meta
 		// object to
@@ -160,10 +154,8 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		fdInputDrop.top=new FormAttachment(wFieldName,margin);
 		inputDrop.setLayoutData(fdInputDrop);
 		
-		//wInputDrop = new Text(shell, SWT.SINGLE | SWT.LEFT | SWT.BORDER);
 		wInputDrop=new Combo(shell, SWT.DROP_DOWN);
 		props.setLook(wInputDrop);
-		//wInputDrop.setItems();		
 		wInputDrop.addModifyListener(lsMod);
 		FormData fdwInputDrop = new FormData();
 		fdwInputDrop.left = new FormAttachment(middle, 0);
@@ -183,13 +175,13 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		
 		wAlgoBox=new Combo(shell,SWT.DROP_DOWN);
 		props.setLook(wAlgoBox);
-		//wAlgoBox.setItems(null);
 		wAlgoBox.addModifyListener(lsMod);
 		FormData fdwAlgoBox=new FormData();
 		fdwAlgoBox.left=new FormAttachment(middle,0);
 		fdwAlgoBox.right = new FormAttachment(100, 0);
 		fdwAlgoBox.top = new FormAttachment(wInputDrop, margin);
 		wAlgoBox.setLayoutData(fdwAlgoBox);
+		
 		
 		//adding Exception/Custom Regex place
 		final Label customLabel=new Label(shell, SWT.RIGHT);
@@ -246,7 +238,6 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		
 		wStepname.addSelectionListener(lsDef);
 		wFieldName.addSelectionListener(lsDef);
-		//wFieldNum.addSelectionListener(lsDef);
 		wInputDrop.addSelectionListener(lsDef);
 		wAlgoBox.addSelectionListener(lsDef);
 		
@@ -261,7 +252,6 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 					wCustomLabel.setEditable(true);
 					wCustomLabel.setBackground(null);
 					customLabel.setForeground(null);
-					//wCustomLabel.setForeground(TEXBLUR);
 					wCustomLabel.setText("[enter your code here]");
 					
 				}else{
@@ -327,7 +317,6 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 			}
 		});
 		
-		//algopattern.algoPatternlistMeth();
 				
 		// Set/Restore the dialog size based on last position on screen
 		// The setSize() method is inherited from BaseStepDialog
@@ -369,37 +358,28 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 					prevFields=new RowMeta();
 					logError("Unable to Find Input Fields");
 				}
-				//int prevFieldLen=prevFields.getFieldNames().length;
 				
-				//ArrayList<String> list=new ArrayList<String>();
 				prevFieldIndexMap=new HashMap<String, String>();
 				
-				//String[] prevFieldList=prevFields.getFieldNames();
 				String[] prevStepFieldsNames=prevFields.getFieldNames();
 				
 				for(int i=0;i<prevStepFieldsNames.length; i++){
-					//list.add(i+":"+prevFieldList[i]);
+			
 					prevFieldIndexMap.put(prevStepFieldsNames[i],Integer.toString(i));				
 				}
-				
-				//String[] prevStepFieldsNames=list.toArray(new String[]{});
-				
-				
-				//Arrays.sort(prevStepFieldsNames);
-				
+						
 				wInputDrop.setItems(prevStepFieldsNames);
 			}
 		};
-		new Thread(fieldLoader).start();
+		new Thread(fieldLoader).run();
 		
 	}
 
 	private void populateDialog() {
 		wStepname.selectAll();
 		wFieldName.setText(meta.getOutputField());
-		//wFieldNum.setText(meta.getFieldNum());
 		wAlgoBox.setItems(meta.getAlgoBoxItems());		
-		//wAlgoBox.select(0); //always by default selects the first item.
+		wAlgoBox.select(0); //always by default selects the first item.
 	}
 
 	/**
@@ -424,18 +404,14 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		// method.
 		// Setting to step name from the dialog control
 		stepname = wStepname.getText();
-		
-		
+	
 		// Setting the settings to the meta object
 		meta.setOutputField(wFieldName.getText());
-		//meta.setFieldNum(wFieldNum.getText());
 		meta.setInputDropData(wInputDrop.getText());
 		meta.setInputDropDataIndex(prevFieldIndexMap.get(wInputDrop.getText()));
 		meta.setAlgoBoxItemsSelected(wAlgoBox.getText());
 		meta.setCustomCode(wCustomLabel.getText());
-		
-		
-		
+	
 		// close the SWT dialog window
 		dispose();
 	}

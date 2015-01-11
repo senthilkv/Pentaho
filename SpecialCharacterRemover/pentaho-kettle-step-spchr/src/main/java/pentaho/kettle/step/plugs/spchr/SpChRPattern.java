@@ -8,7 +8,6 @@ public class SpChRPattern {
 		
 	public String getCleanPattern(RowMetaInterface data,Object[] r,String fieldNum,String selectedPattern,String customCode) throws KettleValueException{
 	
-		//String pattern="[^A-Za-z0-9\\s]";
 		String replace_pattern="";
 		
 		int _intfieldNum=Integer.parseInt(fieldNum);

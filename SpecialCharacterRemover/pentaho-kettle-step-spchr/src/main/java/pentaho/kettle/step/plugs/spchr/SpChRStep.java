@@ -58,10 +58,6 @@ public class SpChRStep extends BaseStep implements StepInterface{
 			// clone the input row structure and place it in our data object
 			data.outputRowMeta = getInputRowMeta().clone();
 			
-			//setFieldNames(data.outputRowMeta.getFieldNames());
-			
-			
-			//meta.setInputDropData(FieldNames);
 			// use meta.getFields() to change it, so it reflects the output row
 			// structure
 			meta.getFields(data.outputRowMeta, getStepname(), null, null, this);

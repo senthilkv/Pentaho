@@ -38,7 +38,6 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 	private final String FIELDNUMLABEL="Stream Field Number";
 
 	private String outputField; //the new column or field name
-	//private String fieldNum; //the field number where we need to apply the spchr
 	private String inputDropData;
 	private String inputDropDataIndex;
 	private String[] algoBoxItems={ "Remove all the Special Characters other than A-Z,a-z,0-9 including white-spaces",
@@ -76,8 +75,7 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 	public void setDefault() {
 		// TODO Auto-generated method stub
 		outputField = "Result";
-		//fieldNum = "0";
-		//inputDropData= getInputDropData();
+		
 	}
 
 	public String getOutputField() {
@@ -88,15 +86,6 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 		this.outputField = outputField;
 	}
 
-
-	/*public String getFieldNum() {
-		return fieldNum;
-	}
-
-	public void setFieldNum(String fieldNum) {
-		this.fieldNum = fieldNum;
-	}
-	*/
 	public String getInputDropData() {
 		
 		return inputDropData;
@@ -118,8 +107,11 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 	public String getXML() throws KettleValueException {
 
 		// only one field to serialize
-		String xml = XMLHandler.addTagValue("outputfield", outputField);
-		return xml;
+		StringBuilder xml=new StringBuilder();
+		
+		xml.append(XMLHandler.addTagValue("outputfield", outputField));
+				
+		return xml.toString();
 	}
 
 	@Override
@@ -129,6 +121,8 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 		try {
 			setOutputField(XMLHandler.getNodeValue(XMLHandler.getSubNode(
 					stepnode, "outputfield")));
+			//setInputDropData(XMLHandler.getNodeValue(XMLHandler.getSubNode(stepnode, "inputDropData")));
+			
 		} catch (Exception e) {
 			throw new KettleXMLException(
 					"Plugin unable to read step info from XML node", e);
@@ -142,6 +136,9 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 		try {
 			rep.saveStepAttribute(id_transformation, id_step,
 					"outputfield", outputField); //$NON-NLS-1$
+			
+			//rep.saveStepAttribute(id_transformation, id_step, "inputDropData", getInputDropData());
+			
 		} catch (Exception e) {
 			throw new KettleException("Unable to save step into repository: "
 					+ id_step, e);
@@ -154,6 +151,7 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 			throws KettleException {
 		try {
 			outputField = rep.getStepAttributeString(id_step, "outputfield"); //$NON-NLS-1$
+			//inputDropData=rep.getStepAttributeString(id_step, "inputDropData");
 		} catch (Exception e) {
 			throw new KettleException("Unable to load step from repository", e);
 		}
@@ -174,7 +172,7 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 
 		// set the name of the new field
 		v.setName(outputField);
-		//v.setName(fieldNum);
+		
 		
 		// type is going to be string
 		v.setType(ValueMetaInterface.TYPE_STRING);
@@ -237,7 +235,7 @@ public class SpChRMeta extends BaseStepMeta implements StepMetaInterface{
 	}
 
 	public void setAlgoBoxItems(String[] algoBoxItems) {
-		//algoBoxItems=new String[]{"Algorithm 1","Algorithm 2","Algorithm 3"};
+		
 		this.algoBoxItems = algoBoxItems;
 	}
 
