@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
@@ -70,11 +71,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		props.setLook(shell);
 		setShellImage(shell, meta);
 
-		// Save the value of the changed flag on the meta object. If the user
-		// cancels
-		// the dialog, it will be restored to this saved value.
-		// The "changed" variable is inherited from BaseStepDialog
-		changed = meta.hasChanged();
+		
 
 		// The ModifyListener used on all controls. It will update the meta
 		// object to
@@ -85,6 +82,11 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 			}
 		};
 
+		// Save the value of the changed flag on the meta object. If the user
+				// cancels
+				// the dialog, it will be restored to this saved value.
+				// The "changed" variable is inherited from BaseStepDialog
+		changed = meta.hasChanged();
 		
 		// ------------------------------------------------------- //
 		// SWT code for building the actual settings dialog //
@@ -147,25 +149,13 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		fdValName.top = new FormAttachment(wStepname, margin);
 		wFieldName.setLayoutData(fdValName);
 		
-		// field value
-		/*Label wlFieldNum = new Label(shell, SWT.RIGHT);
-		//wlFieldNum.setText(BaseMessages.getString(PKG,"SpChR.FieldNum.Label"));
-		wlFieldNum.setText(meta.getFIELDNUMLABEL());
-		props.setLook(wlFieldNum);
-		FormData fdlFieldNum = new FormData();
-		fdlFieldNum.left = new FormAttachment(0, 0);
-		fdlFieldNum.right = new FormAttachment(middle, -margin);
-		fdlFieldNum.top = new FormAttachment(wFieldName, margin);
-		wlFieldNum.setLayoutData(fdlFieldNum);
-
-		wFieldNum = new Text(shell, SWT.SINGLE | SWT.LEFT | SWT.BORDER);
-		props.setLook(wFieldNum);
-		wFieldNum.addModifyListener(lsMod);
-		FormData fdFieldNum = new FormData();
-		fdFieldNum.left = new FormAttachment(middle, 0);
-		fdFieldNum.right = new FormAttachment(100, 0);
-		fdFieldNum.top = new FormAttachment(wFieldName, margin);
-		wFieldNum.setLayoutData(fdFieldNum);*/
+		Group gConnect = new Group(shell, SWT.SHADOW_ETCHED_IN);
+        gConnect.setText("Choose Parameters");
+        FormLayout gConnectLayout = new FormLayout();
+        gConnectLayout.marginWidth = 3;
+        gConnectLayout.marginHeight = 3;
+        gConnect.setLayout(gConnectLayout);
+        props.setLook(gConnect);
 		
 		//field num Dropdown
 		
@@ -304,30 +294,34 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 				
 				int textLen=wCustomLabel.getText().length();
 				String textEnter=wCustomLabel.getText();
+				String selectedAlgo=wAlgoBox.getText();
+				int selectedAlgoIndex = 0;
 				
-				//Check the initial conditions
-				if(textLen >=1 && textEnter.substring(0,1).equals("[") && textEnter.substring(textLen-1, textLen).equals("]")){
-					
-					//test the regex expression for missing groups, + and other basic stuffs
-					//if (wAlgoBox.getText().equals("Custom Regular Expression")) {
-						try {
-							Pattern.compile(textEnter);
-
-						} catch (Exception e) {
-
-							wCustomLabel.setBackground(RED);
-
-						}
-					//}
-					
-					wCustomLabel.setBackground(GREEN);
-					
-				}else{ 
-					//initial conditions are false
-					wCustomLabel.setBackground(RED);
+				if(selectedAlgo.equals("Keep A-Z,a-z,0-9 and ADD Exceptions")){
+					selectedAlgoIndex=1;
+				}else if(selectedAlgo.equals("Custom Regular Expression")){
+					selectedAlgoIndex=2;
 				}
-					
 				
+				switch(selectedAlgoIndex){
+					case 1:
+						if(textLen >=1 && textEnter.substring(0,1).equals("[") && textEnter.substring(textLen-1, textLen).equals("]")){
+							wCustomLabel.setBackground(GREEN);
+						}else{ 
+							//initial conditions are false
+							wCustomLabel.setBackground(RED);
+						}				
+						break;
+					case 2:
+							try {
+								Pattern.compile(textEnter);
+								wCustomLabel.setBackground(GREEN);
+							} catch (Exception e) {
+								wCustomLabel.setBackground(RED);
+							}
+
+							break;
+				}
 			}
 		});
 		
@@ -413,7 +407,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		wFieldName.setText(meta.getOutputField());
 		//wFieldNum.setText(meta.getFieldNum());
 		wAlgoBox.setItems(meta.getAlgoBoxItems());		
-		wAlgoBox.select(0); //always by default selects the first item.
+		//wAlgoBox.select(0); //always by default selects the first item.
 	}
 
 	/**
@@ -438,6 +432,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		// method.
 		// Setting to step name from the dialog control
 		stepname = wStepname.getText();
+		
 		
 		// Setting the settings to the meta object
 		meta.setOutputField(wFieldName.getText());
