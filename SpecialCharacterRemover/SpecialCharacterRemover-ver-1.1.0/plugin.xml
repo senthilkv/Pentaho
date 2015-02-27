@@ -26,4 +26,14 @@
     		 -->
 		</libraries>
 		
+		<localized_category>
+			<category locale="en_US">Experimental</category>
+		</localized_category>
+		<localized_description>
+			<description locale="en_US">Special Character Remover</description>
+		</localized_description>
+		<localized_tooltip>
+			<tooltip locale="en_US">Remove special characters from your input stream</tooltip>
+		</localized_tooltip>
+		
 </plugin>
