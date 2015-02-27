@@ -4,6 +4,7 @@
 	<groupId>pentaho.kettle.step.plugs.spchr</groupId>
 	<artifactId>pentaho-kettle-step-spchr</artifactId>
 	<version>1.1.0</version>
+	<packaging>jar</packaging>
 	<build>
 		<plugins>
 			<plugin>
@@ -21,6 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+	
 
 	<dependencies>
 

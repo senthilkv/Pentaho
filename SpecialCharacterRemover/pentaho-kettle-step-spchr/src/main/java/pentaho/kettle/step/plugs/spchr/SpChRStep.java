@@ -10,6 +10,13 @@ import org.pentaho.di.trans.step.StepInterface;
 import org.pentaho.di.trans.step.StepMeta;
 import org.pentaho.di.trans.step.StepMetaInterface;
 
+/**
+ * This Step class is the part of the SpecialCharacterRemover Plugin.
+ *  
+ * @author Rishu Shrivastava
+ * @version 1.1.0
+ *
+ */
 public class SpChRStep extends BaseStep implements StepInterface{
 	
 	

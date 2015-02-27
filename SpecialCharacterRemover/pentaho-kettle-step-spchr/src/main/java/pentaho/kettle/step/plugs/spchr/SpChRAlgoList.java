@@ -3,12 +3,19 @@ package pentaho.kettle.step.plugs.spchr;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This AlgoList Class is the part of the SpecialCharacterRemover Plugin.
+ * Used for defining the algorithms used in the plugin process.
+ * 
+ * @author Rishu Shrivastava
+ * @version 1.1.0
+ *
+ */
 public class SpChRAlgoList {
 	
 	private static Map<String,String> algomap;
 	private String selectedPattern;
-	
-	
+		
 	public String getAlgoPattern(String selectedalgo,String customCode){
 		
 		algomap=new HashMap<String, String>();

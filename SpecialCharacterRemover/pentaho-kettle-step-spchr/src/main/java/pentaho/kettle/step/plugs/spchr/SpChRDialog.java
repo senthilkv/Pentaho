@@ -34,10 +34,16 @@ import org.pentaho.di.trans.step.BaseStepMeta;
 import org.pentaho.di.trans.step.StepDialogInterface;
 import org.pentaho.di.ui.trans.step.BaseStepDialog;
 
-
+/**
+ * This dialog class is the part of the SpecialCharacterRemover Plugin.
+ * 
+ * @author Rishu Shrivastava
+ * @version 1.1.0
+ * 
+ */
 public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 	
-	private static Class<?> PKG = SpChRMeta.class; // for il8n purposes
+	private static Class<?> PKG = SpChRMeta.class;   // for il8n purposes
 
 	private SpChRMeta meta;
 	
@@ -95,16 +101,15 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		final Color GREEN=display.getSystemColor(SWT.COLOR_GREEN);
 
 		shell.setLayout(formLayout);
-		//shell.setText(BaseMessages.getString("Special Character Removal")); //disabling use of property file due to issue
-		shell.setText(meta.getTITLE());
+		shell.setText(BaseMessages.getString(PKG, "SpChRMeta.Shell.Title"));
+		
 
 		int middle = props.getMiddlePct();
 		int margin = Const.MARGIN;
 
 		// Stepname line
 		wlStepname = new Label(shell, SWT.RIGHT);
-		wlStepname.setText(BaseMessages.getString(PKG, "System.Label.StepName")); //System variables are working fine.. only the property files are having trouble
-				
+		wlStepname.setText(BaseMessages.getString(PKG, "System.Label.StepName"));
 		props.setLook(wlStepname);
 		fdlStepname = new FormData();
 		fdlStepname.left = new FormAttachment(0, 0);
@@ -124,8 +129,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		
 		// output field value
 		Label wlValName = new Label(shell, SWT.RIGHT);
-		//wlValName.setText(BaseMessages.getString(PKG,"SpChR.FieldName.Label")); //disabling the use of property file due to issue
-		wlValName.setText(meta.getFIELDNAMELABEL());		
+		wlValName.setText(BaseMessages.getString(PKG,"SpChRMeta.FieldName.Label"));
 		props.setLook(wlValName);
 		FormData fdlValName = new FormData();
 		fdlValName.left = new FormAttachment(0, 0);
@@ -146,7 +150,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		//field num Dropdown
 		
 		Label inputDrop=new Label(shell,SWT.RIGHT);
-		inputDrop.setText("Input Dropdown");
+		inputDrop.setText(BaseMessages.getString(PKG,"SpChRMeta.FieldNum.Label"));
 		props.setLook(inputDrop);
 		FormData fdInputDrop=new FormData();
 		fdInputDrop.left=new FormAttachment(0,0);
@@ -165,7 +169,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		
 		//Select algorithm combo box
 		Label algoBox=new Label(shell, SWT.RIGHT);
-		algoBox.setText("Select Algorithm");
+		algoBox.setText(BaseMessages.getString(PKG,"SpChRMeta.Algo.Label"));
 		props.setLook(algoBox);
 		FormData fdalgoBox=new FormData();
 		fdalgoBox.left=new FormAttachment(0,0);
@@ -185,7 +189,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 		
 		//adding Exception/Custom Regex place
 		final Label customLabel=new Label(shell, SWT.RIGHT);
-		customLabel.setText("Add Exception/Custom RegEx Expression");
+		customLabel.setText(BaseMessages.getString(PKG,"SpChRMeta.AlgoExe.Label"));
 		customLabel.setForeground(TEXBLUR);
 		props.setLook(customLabel);
 		FormData fdcustomLabel=new FormData();
@@ -369,6 +373,7 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 				}
 						
 				wInputDrop.setItems(prevStepFieldsNames);
+				//wInputDrop.addSelectionListener(lsDef);
 			}
 		};
 		new Thread(fieldLoader).run();
@@ -377,9 +382,17 @@ public class SpChRDialog extends BaseStepDialog implements StepDialogInterface{
 
 	private void populateDialog() {
 		wStepname.selectAll();
-		wFieldName.setText(meta.getOutputField());
-		wAlgoBox.setItems(meta.getAlgoBoxItems());		
-		wAlgoBox.select(0); //always by default selects the first item.
+		
+		if(meta.getOutputField()!=null){
+			wFieldName.setText(meta.getOutputField());
+		}
+				
+		if(meta.getAlgoBoxItems()!=null){
+			wAlgoBox.setItems(meta.getAlgoBoxItems());		
+			//wAlgoBox.select(0); //always by default selects the first item.
+		}
+		
+				
 	}
 
 	/**
