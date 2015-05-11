@@ -18,7 +18,8 @@ Work Till Date:
 
     a Pentaho Kettle Plugin coded in Java for removing special characters from the input Stream. Current Version:1.1
     
-    
+3. DDL Generator :
+    a Pentaho Kettle Plugin for generating the DDL of the tables selected into a file.
     
 Each Folder contains a seperate "README.md" file for more description on the app descriptions, development specs and future release.
 
